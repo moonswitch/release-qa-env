@@ -6,20 +6,30 @@ on:
       - main
       - 'releases/*'
 
+permissions:
+  id-token: write
+
 jobs:
   # unit tests
-  units:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - run: npm ci
-    - run: npm test
+  # units:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - uses: actions/checkout@v2
+  #   - run: npm ci
+  #   - run: npm test
 
   # test action works running from the graph
   test:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - uses: ./
+    - name: Authenticate with Google Cloud
+      id: auth
+      uses: google-github-actions/auth@v0
       with:
-        milliseconds: 1000
+        workload_identity_provider: projects/22448147000/locations/global/workloadIdentityPools/ci-pool/providers/github
+        service_account: gha-release-qa-env@moonswitch-dev.iam.gserviceaccount.com
+    - uses: ./
+      id: release-qa-env
+      with:
+        table: qa-envs

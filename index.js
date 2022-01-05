@@ -1,18 +1,26 @@
 const core = require('@actions/core');
-const wait = require('./wait');
+const Firestore = require('@google-cloud/firestore');
+const github = require('@actions/github');
 
+const db = new Firestore();
 
-// most @actions toolkit packages have async methods
 async function run() {
   try {
-    const ms = core.getInput('milliseconds');
-    core.info(`Waiting ${ms} milliseconds ...`);
+    const table_name = core.getInput('table');
+    const table = db.collection(table_name);
+    const number = github.context.issue.number;
+    const pr = `pr-${number}`;
 
-    core.debug((new Date()).toTimeString()); // debug is only output if you set the secret `ACTIONS_RUNNER_DEBUG` to true
-    await wait(parseInt(ms));
-    core.info((new Date()).toTimeString());
+    core.info(`Checking for active environment assigned to ${pr}...`);
+    const envs = await table.where('pr', '==', pr).where('in_use', '==', true).limit(1).get();
 
-    core.setOutput('time', new Date().toTimeString());
+    if (!envs.empty) {
+      const env = envs.docs[0];
+      core.info(`Releasing environment used by ${pr}...`);
+      envs.ref.update({in_use: false, pr: null});
+    } else {
+      core.info(`No active environment found for ${pr}. Nothing to do.`);
+    }
   } catch (error) {
     core.setFailed(error.message);
   }
