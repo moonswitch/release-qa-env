@@ -17,7 +17,7 @@ async function run() {
     if (!envs.empty) {
       const env = envs.docs[0];
       core.info(`Releasing environment used by ${pr}...`);
-      envs.ref.update({in_use: false, pr: null});
+      env.ref.update({in_use: false, pr: null});
     } else {
       core.info(`No active environment found for ${pr}. Nothing to do.`);
     }
