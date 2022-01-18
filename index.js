@@ -24,7 +24,7 @@ async function run() {
       core.info(`Found QA environment in use by ${data.pull_requests}`);
 
       core.info(`Removing ${pr} from QA environment ...`);
-      env.ref.update({
+      await env.ref.update({
         in_use, 
         pr: FieldValue.arrayRemove(pr),
         branch,
