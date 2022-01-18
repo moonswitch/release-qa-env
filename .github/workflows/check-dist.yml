@@ -14,6 +14,8 @@ on:
   pull_request:
     paths-ignore:
       - '**.md'
+    branches-ignore:    
+      - 'dependabot/*'
   workflow_dispatch:
 
 jobs:
