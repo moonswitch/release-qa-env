@@ -32,4 +32,5 @@ jobs:
     - uses: ./
       id: release-qa-env
       with:
+        cloud_provider: gcp
         table: qa-envs
