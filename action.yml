@@ -2,9 +2,12 @@ name: Release QA Environment
 description: Release a QA environment
 inputs:
   Table:
-    description: Name of the Google Firestore Collection to query for environment details.
+    description: Name of the Google Firestore Collection or AWS DynamoDB table to query for environment details.
     required: true
     default: qa-envs
+  Cloud_Provider:
+    description: Which cloud provider to use. Options are 'gcp' or 'aws'.
+    required: true
 runs:
   using: node16
   main: dist/index.js
