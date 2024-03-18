@@ -11,7 +11,7 @@ async function aws(db, table_name, pr) {
   const current_envs = await db.scan(scanByPr).promise(); 
   core.debug(`Current environments: ${JSON.stringify(current_envs)}`);
 
-  if (current_envs.Count === 1) { 
+  if (current_envs.Count == 1) { 
     core.debug(`Found an active QA environment for ${pr}`);
     const env = current_envs.Items[0];
     core.debug(`Environment details: ${JSON.stringify(env)}`);
