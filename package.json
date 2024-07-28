@@ -32,7 +32,7 @@
     "@actions/github": "^5.0.0",
     "@aws-sdk/client-dynamodb": "^3.52.0",
     "@aws-sdk/lib-dynamodb": "^3.52.0",
-    "@google-cloud/firestore": "^5.0.2"
+    "@google-cloud/firestore": "^7.0.0"
   },
   "devDependencies": {
     "@vercel/ncc": "^0.33.3",
